@@ -18,33 +18,80 @@ var HelloWorldLayer = cc.Layer.extend({
         logo.y = winsize.height - logoSize.height / 2;
         this.addChild(logo);
 
-        var quit = new cc.MenuItemLabel(new cc.LabelTTF("QUIT", "sans", 32), function() {
-            cc.log("QUIT");
-        });
-        var menu = new cc.Menu(quit);
-        var size = quit.getContentSize();
-        menu.x = winsize.width - size.width / 2 - 16;
-        menu.y = size.height / 2 + 16;
-        this.addChild(menu);
+        // var quit = new cc.MenuItemLabel(new cc.LabelTTF("QUIT", "sans", 32), function() {
+        //     cc.log("QUIT");
+        // });
+        // var menu = new cc.Menu(quit);
+        // var size = quit.getContentSize();
+        // menu.x = winsize.width - size.width / 2 - 16;
+        // menu.y = size.height / 2 + 16;
+        // this.addChild(menu);
 
         return true;
     },
 
     createTestMenu:function() {
-        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 1", "sans", 28), function() {
-            cc.log("Test Item 1");
+        sdkbox.PluginAppnext.init();
+        sdkbox.PluginAppnext.setListener({
+            onAdError : function(msg) {
+                cc.log("onAdError: " + msg);
+            },
+
+            onAdLoaded : function() {
+                cc.log("onAdLoaded");
+            },
+
+            onAdOpened : function() {
+                cc.log("onAdOpened");
+            },
+
+            onAdClosed : function() {
+                cc.log("onAdClosed");
+            },
+
+            onAdClicked : function() {
+                cc.log("onAdClicked");
+            },
+
+            onVideoLoaded : function(name) {
+                cc.log("onVideoLoaded: " + name);
+            },
+
+            onVideoClicked : function(name) {
+                cc.log("onVideoClicked: " + name);
+            },
+
+            onVideoClosed : function(name) {
+                cc.log("onVideoClosed: " + name);
+            },
+
+            onVideoEnded : function(name) {
+                cc.log("onVideoEnded: " + name);
+            },
+
+            onVideoError : function(name, msg) {
+                cc.log("onVideoError: " + name);
+            }
         });
 
-        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 2", "sans", 28), function() {
-            cc.log("Test Item 2");
-        });
+        sdkbox.PluginAppnext.cacheAd("default");
+        sdkbox.PluginAppnext.cacheVideo("fullscreen");
 
-        var item3 = new cc.MenuItemLabel(new cc.LabelTTF("Test Item 3", "sans", 28), function() {
-            cc.log("Test Item 3");
+        var menu = new cc.Menu();
+
+        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Show Ads", "sans", 28), function() {
+            cc.log("Show Ads");
+            sdkbox.PluginAppnext.showAd();
         });
+        menu.addChild(item1);
+
+        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Show Video", "sans", 28), function() {
+            cc.log("Show Video");
+            sdkbox.PluginAppnext.showVideo("fullscreen");
+        });
+        menu.addChild(item2);
 
         var winsize = cc.winSize;
-        var menu = new cc.Menu(item1, item2, item3);
         menu.x = winsize.width / 2;
         menu.y = winsize.height / 2;
         menu.alignItemsVerticallyWithPadding(20);
