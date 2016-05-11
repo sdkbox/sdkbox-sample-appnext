@@ -57,9 +57,10 @@ bool HelloWorld::init()
 
 void HelloWorld::createTestMenu()
 {
-    sdkbox::PluginAppnext::cacheAd("default");
-    sdkbox::PluginAppnext::cacheVideo("fullscreen");
-    
+//    sdkbox::PluginAppnext::cacheAd("default");
+//    sdkbox::PluginAppnext::cacheVideo("fullscreen");
+
+    sdkbox::PluginAppnext::setListener(this);
     auto menu = Menu::create();
 
     menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Show Ads", "sans", 24), [](Ref*){
@@ -67,9 +68,14 @@ void HelloWorld::createTestMenu()
         sdkbox::PluginAppnext::showAd();
     }));
 
-    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Show Video", "sans", 24), [](Ref*){
-        CCLOG("Show Video");
+    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Show fullscreen video", "sans", 24), [](Ref*){
+        CCLOG("Show fullscreen");
         sdkbox::PluginAppnext::showVideo("fullscreen");
+    }));
+
+    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Show rewarded video", "sans", 24), [](Ref*){
+        CCLOG("Show reward");
+        sdkbox::PluginAppnext::showVideo("reward");
     }));
 
     menu->alignItemsVerticallyWithPadding(10);
@@ -101,17 +107,17 @@ void HelloWorld::onAdClicked()
     CCLOG("onAdClicked");
 }
 
-void HelloWorld::onVideoLoaded(const std::string& name) // not support on ios
+void HelloWorld::onVideoLoaded(const std::string& name)
 {
     CCLOG("onVideoLoaded: %s", name.c_str());
 }
 
-void HelloWorld::onVideoClicked(const std::string& name) // not support on ios
+void HelloWorld::onVideoClicked(const std::string& name)
 {
     CCLOG("onVideoClicked: %s", name.c_str());
 }
 
-void HelloWorld::onVideoClosed(const std::string& name) // not support on ios
+void HelloWorld::onVideoClosed(const std::string& name)
 {
     CCLOG("onVideoClosed: %s", name.c_str());
 }
@@ -121,7 +127,7 @@ void HelloWorld::onVideoEnded(const std::string& name) // not support on ios
     CCLOG("onVideoEnded: %s", name.c_str());
 }
 
-void HelloWorld::onVideoError(const std::string& name, const std::string& msg) // not support on ios
+void HelloWorld::onVideoError(const std::string& name, const std::string& msg)
 {
     CCLOG("onVideoError: %s, %s", name.c_str(), msg.c_str());
 }

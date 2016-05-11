@@ -115,11 +115,11 @@ namespace sdkbox {
         virtual void onAdClosed() {}
         virtual void onAdClicked() {}
 
-        virtual void onVideoLoaded(const std::string& name) {} // not support on ios
-        virtual void onVideoClicked(const std::string& name) {} // not support on ios
-        virtual void onVideoClosed(const std::string& name) {} // not support on ios
+        virtual void onVideoLoaded(const std::string& name) {}
+        virtual void onVideoClicked(const std::string& name) {}
+        virtual void onVideoClosed(const std::string& name) {}
         virtual void onVideoEnded(const std::string& name) {} // not support on ios
-        virtual void onVideoError(const std::string& name, const std::string& msg) {} // not support on ios
+        virtual void onVideoError(const std::string& name, const std::string& msg) {}
 
     };
 }
