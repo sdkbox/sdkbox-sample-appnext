@@ -55,7 +55,48 @@
                 "default": {
                     "cache": true, 
                     "type": "interstitial", 
-                    "id": "6d596bc5-b4c1-48ca-be95-3758fd29a3a5"
+                    "id": "6d596bc5-b4c1-48ca-be95-3758fd29a3a5",
+                    "button_text":"Button Text",
+                    "button_color":"#6AB344",
+                    "categories":"Action,Puzzle",
+                    "postback":"postback",
+
+                    "skip_text":"Skip Text",
+                    "mute":false,
+                    "autoplay":true,
+                    "creative_type":"managed"
+                },
+                "fullscreen": {
+                    "cache":true,
+                    "id":"39cd02ce-8607-42f2-8134-069aaa3796e2",
+                    "type":"fullscreen",
+
+                    "button_text":"Button Text",
+                    "button_color":"#6AB344",
+                    "categories":"Action,Puzzle",
+                    "postback":"postback",
+
+                    "progress_type":"clock",
+                    "progress_color":"#ffffff",
+                    "show_close_button":true,
+                    "video_lenght":"short",
+                    "close_delay":5.0
+                },
+                "reward": {
+                    "cache":true,
+                    "id":"1cd50102-0914-4506-8514-3e2bb3787c35",
+                    "type":"reward",
+
+                    "button_text":"Button Text",
+                    "button_color":"#6AB344",
+                    "categories":"Action,Puzzle",
+                    "postback":"postback",
+
+                    "progress_type":"bar",
+                    "progress_color":"#ffff00",
+                    "show_close_button":true,
+                    "video_lenght":"long",
+                    "close_delay":5.4
                 }
             }
         }
