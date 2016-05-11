@@ -42,3 +42,4 @@ js/frameworks/runtime-src/proj.android/libs/appnext_lib/bin/
 js/frameworks/runtime-src/proj.android/libs/appnext_lib/gen/
 js/frameworks/runtime-src/proj.android/libs/appnext_lib/local.properties
 js/frameworks/runtime-src/proj.android/libs/appnext_lib/proguard-project.txt
+backup-*
