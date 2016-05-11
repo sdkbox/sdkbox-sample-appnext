@@ -74,8 +74,8 @@ var HelloWorldLayer = cc.Layer.extend({
             }
         });
 
-        sdkbox.PluginAppnext.cacheAd("default");
-        sdkbox.PluginAppnext.cacheVideo("fullscreen");
+        // sdkbox.PluginAppnext.cacheAd("default");
+        // sdkbox.PluginAppnext.cacheVideo("fullscreen");
 
         var menu = new cc.Menu();
 
@@ -85,9 +85,15 @@ var HelloWorldLayer = cc.Layer.extend({
         });
         menu.addChild(item1);
 
-        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Show Video", "sans", 28), function() {
-            cc.log("Show Video");
+        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Show fullscreen Video", "sans", 28), function() {
+            cc.log("Show fullscreen Video");
             sdkbox.PluginAppnext.showVideo("fullscreen");
+        });
+        menu.addChild(item2);
+
+        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Show rewarded Video", "sans", 28), function() {
+            cc.log("Show rewarded Video");
+            sdkbox.PluginAppnext.showVideo("reward");
         });
         menu.addChild(item2);
 
