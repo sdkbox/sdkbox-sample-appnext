@@ -1,17 +1,37 @@
 
-# How to run sdkbox samples
+# sdkbox Appnext sample
 
-Steps:
+##Getting Started
 
+###Setup
 ~~~bash
-mkdir samples
-cd samples
+# run setup script
+./setup
+~~~
 
-# must clone this repo
-git clone --depth 1 https://github.com/sdkbox/sdkbox-cocos2d-x-binary.git
+After setup your directory will looks like this
+~~~
++-- sdkbox-cocos2d-x-binary
++-- sdkbox-sample-appnext
+| +-- cpp
+| +-- lua
+| \-- js
+~~~
 
-# clone sample repo
-git clone --depth 1 https://github.com/sdkbox/sdkbox-sample-appnext.git
+* cpp: contains cocos2d-x c++ project sample
+* js: contains cocos2d-x js project sample
+* lua: contains cocos2d-x lua project sample
+
+###Run
+
+Under each sample project there are project files for different platform
+
+* proj.ios_mac: project file for ios/mac platform
+* proj.android: project file to android platform
+
+
+You can also run the sample with commandline
+~~~bash
 
 # run sample with specified language and platform
 # eg: cpp and ios
@@ -24,14 +44,4 @@ git clone --depth 1 https://github.com/sdkbox/sdkbox-sample-appnext.git
 
 ~~~
 
-Memo:
 
-1.  Sample repo and cocos2dx repo must be in same level directory
-
-~~~
-+-- sdkbox-cocos2d-x-binary
-+-- sdkbox-sample-appnext
-| +-- cpp
-| +-- lua
-| \-- js
-~~~
