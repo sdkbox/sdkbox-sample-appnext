@@ -111,7 +111,7 @@ namespace sdkbox {
 
         virtual void onAdError(const std::string& msg) {}
         virtual void onAdLoaded() {}
-        virtual void onAdOpened() {} // not support on android
+        virtual void onAdOpened() {}
         virtual void onAdClosed() {}
         virtual void onAdClicked() {}
 

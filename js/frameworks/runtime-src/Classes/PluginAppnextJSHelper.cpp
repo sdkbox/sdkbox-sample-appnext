@@ -1,14 +1,18 @@
 #include "PluginAppnextJSHelper.h"
-#include "cocos2d_specifics.hpp"
 #include "PluginAppnext/PluginAppnext.h"
 #include "SDKBoxJSHelper.h"
-
-#include "js_manual_conversions.h"
 
 extern JSObject* jsb_sdkbox_PluginAppnext_prototype;
 static JSContext* s_cx = nullptr;
 
-class AppNextCallbackJS: public cocos2d::CCObject {
+#if (COCOS2D_VERSION < 0x00030000)
+#define Ref CCObject
+#define Director CCDirector
+#define getInstance sharedDirector
+#define schedule scheduleSelector
+#endif
+
+class AppNextCallbackJS: public cocos2d::Ref {
 public:
     AppNextCallbackJS();
     void schedule();
@@ -21,16 +25,10 @@ public:
     int _paramLen;
 };
 
-class AppnextListenerJS : public sdkbox::AppnextListener {
-private:
-    JSObject* _JSDelegate;
+class AppnextListenerJS : public sdkbox::AppnextListener, public sdkbox::JSListenerBase
+{
 public:
-    void setJSDelegate(JSObject* delegate) {
-        _JSDelegate = delegate;
-    }
-
-    JSObject* getJSDelegate() {
-        return _JSDelegate;
+    AppnextListenerJS():sdkbox::JSListenerBase() {
     }
 
     void onAdError(const std::string& msg) {
@@ -104,7 +102,7 @@ public:
         }
         JSContext* cx = s_cx;
         const char* func_name = func;
-        JS::RootedObject obj(cx, _JSDelegate);
+        JS::RootedObject obj(cx, getJSDelegate());
         JSAutoCompartment ac(cx, obj);
 
 #if defined(MOZJS_MAJOR_VERSION)
@@ -156,7 +154,7 @@ _paramLen(0) {
 
 void AppNextCallbackJS::schedule() {
     retain();
-    cocos2d::CCDirector::sharedDirector()->getScheduler()->scheduleSelector(schedule_selector(AppNextCallbackJS::notityJs), this, 0.1, false);
+    cocos2d::Director::getInstance()->getScheduler()->schedule(schedule_selector(AppNextCallbackJS::notityJs), this, 0.1, 0, 0.0f, false);
     autorelease();
 }
 
@@ -166,7 +164,6 @@ void AppNextCallbackJS::notityJs(float dt) {
     if (l) {
         l->invokeJS(_name.c_str(), _paramVal, _paramLen);
     }
-    cocos2d::CCDirector::sharedDirector()->getScheduler()->unscheduleAllForTarget(this);
     release();
 }
 
@@ -190,11 +187,10 @@ JSBool js_PluginAppnextJS_PluginAppnext_setListener(JSContext *cx, uint32_t argc
         {
             ok = false;
         }
-        JSObject *tmpObj = args.get(0).toObjectOrNull();
 
         JSB_PRECONDITION2(ok, cx, false, "js_PluginAppnextJS_PluginAppnext_setIAPListener : Error processing arguments");
         AppnextListenerJS* wrapper = new AppnextListenerJS();
-        wrapper->setJSDelegate(tmpObj);
+        wrapper->setJSDelegate(args.get(0));
         sdkbox::PluginAppnext::setListener(wrapper);
 
         args.rval().setUndefined();
