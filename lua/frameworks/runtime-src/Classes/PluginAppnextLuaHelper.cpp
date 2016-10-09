@@ -1,8 +1,6 @@
 
 #include "PluginAppnextLuaHelper.h"
 #include "PluginAppnext/PluginAppnext.h"
-#include "CCLuaEngine.h"
-#include "tolua_fix.h"
 #include "SDKBoxLuaHelper.h"
 
 class AppnextListenerLua : public sdkbox::AppnextListener {
