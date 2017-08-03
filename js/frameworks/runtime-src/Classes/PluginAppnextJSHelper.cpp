@@ -17,11 +17,11 @@ public:
     AppNextCallbackJS();
     void schedule();
     void notityJs(float dt);
-    int transParams(jsval** pp);
+    int transParams(JS::Value** pp);
 
     std::string _name;  // function name
 
-    jsval _paramVal[2];
+    JS::Value _paramVal[2];
     int _paramLen;
 };
 
@@ -33,70 +33,100 @@ public:
 
     void onAdError(const std::string& msg) {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onAdError";
-        cb->_paramVal[0] = std_string_to_jsval(s_cx, msg);
+        cb->_paramVal[0] = SB_STR_TO_JSVAL(s_cx, msg);
         cb->_paramLen = 1;
         cb->schedule();
     }
     void onAdLoaded() {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onAdLoaded";
         cb->schedule();
     }
     void onAdOpened() {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onAdOpened";
         cb->schedule();
     }
     void onAdClosed() {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onAdClosed";
         cb->schedule();
     }
     void onAdClicked() {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onAdClicked";
         cb->schedule();
     }
 
     void onVideoLoaded(const std::string& name) {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onVideoLoaded";
-        cb->_paramVal[0] = std_string_to_jsval(s_cx, name);
+        cb->_paramVal[0] = SB_STR_TO_JSVAL(s_cx, name);
         cb->_paramLen = 1;
         cb->schedule();
     }
     void onVideoClicked(const std::string& name) {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onVideoClicked";
-        cb->_paramVal[0] = std_string_to_jsval(s_cx, name);
+        cb->_paramVal[0] = SB_STR_TO_JSVAL(s_cx, name);
         cb->_paramLen = 1;
         cb->schedule();
     }
     void onVideoClosed(const std::string& name) {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onVideoClosed";
-        cb->_paramVal[0] = std_string_to_jsval(s_cx, name);
+        cb->_paramVal[0] = SB_STR_TO_JSVAL(s_cx, name);
         cb->_paramLen = 1;
         cb->schedule();
     }
     void onVideoEnded(const std::string& name) {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onVideoEnded";
-        cb->_paramVal[0] = std_string_to_jsval(s_cx, name);
+        cb->_paramVal[0] = SB_STR_TO_JSVAL(s_cx, name);
         cb->_paramLen = 1;
         cb->schedule();
     }
     void onVideoError(const std::string& name, const std::string& msg) {
         AppNextCallbackJS* cb = new AppNextCallbackJS();
+#if MOZJS_MAJOR_VERSION < 52
+        JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+#endif
         cb->_name = "onVideoError";
-        cb->_paramVal[0] = std_string_to_jsval(s_cx, name);
-        cb->_paramVal[1] = std_string_to_jsval(s_cx, msg);
+        cb->_paramVal[0] = SB_STR_TO_JSVAL(s_cx, name);
+        cb->_paramVal[1] = SB_STR_TO_JSVAL(s_cx, msg);
         cb->_paramLen = 2;
         cb->schedule();
     }
 
-    void invokeJS(const char* func, jsval* pVals, int valueSize) {
+    void invokeJS(const char* func, JS::Value* pVals, int valueSize) {
         if (!s_cx) {
             return;
         }
@@ -125,7 +155,7 @@ public:
             if(!JS_GetProperty(cx, obj, func_name, &func_handle)) {
                 return;
             }
-            if(func_handle == JSVAL_VOID) {
+            if(func_handle == JS::NullValue()) {
                 return;
             }
 
@@ -169,7 +199,7 @@ void AppNextCallbackJS::notityJs(float dt) {
 
 #if defined(MOZJS_MAJOR_VERSION)
 #if MOZJS_MAJOR_VERSION >= 33
-bool js_PluginAppnextJS_PluginAppnext_setListener(JSContext *cx, uint32_t argc, jsval *vp)
+bool js_PluginAppnextJS_PluginAppnext_setListener(JSContext *cx, uint32_t argc, JS::Value *vp)
 #else
 bool js_PluginAppnextJS_PluginAppnext_setListener(JSContext *cx, uint32_t argc, jsval *vp)
 #endif
@@ -190,13 +220,13 @@ JSBool js_PluginAppnextJS_PluginAppnext_setListener(JSContext *cx, uint32_t argc
 
         JSB_PRECONDITION2(ok, cx, false, "js_PluginAppnextJS_PluginAppnext_setIAPListener : Error processing arguments");
         AppnextListenerJS* wrapper = new AppnextListenerJS();
-        wrapper->setJSDelegate(args.get(0));
+        wrapper->setJSDelegate(cx, args.get(0));
         sdkbox::PluginAppnext::setListener(wrapper);
 
         args.rval().setUndefined();
         return true;
     }
-    JS_ReportError(cx, "js_PluginAppnextJS_PluginAppnext_setIAPListener : wrong number of arguments");
+    JS_ReportErrorUTF8(cx, "js_PluginAppnextJS_PluginAppnext_setIAPListener : wrong number of arguments");
     return false;
 }
 
@@ -206,7 +236,8 @@ void appnext_set_constants(JSContext* cx, const JS::RootedObject& obj, const std
 void appnext_set_constants(JSContext* cx, JSObject* obj, const std::string& name, const std::map<std::string, int>& params)
 #endif
 {
-    jsval val = sdkbox::std_map_string_int_to_jsval(cx, params);
+    JS::RootedValue val(cx);
+    sdkbox::std_map_string_int_to_jsval(cx, params, &val);
 
     JS::RootedValue rv(cx);
     rv = val;
